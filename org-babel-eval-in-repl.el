@@ -34,12 +34,15 @@
 
 ;; @ Get data
 (defun ober:get-block-content ()
-  "@todo implement. Get source block content.")
+  "Get source block content."
+  (nth 1 (org-babel-get-src-block-info)))
 
 (defun ober:get-type ()
   "Get language string from `org-babel-src-block-info'.
 Returns nil if the cursor is outside a src block."
   (nth 0 (org-babel-get-src-block-info)))
+
+;; Reference:
 ;; (org-babel-get-src-block-info) => '(language body arguments switches name start coderef)
 
 ;; @ Decide action
@@ -66,6 +69,29 @@ Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))"
   "Get exec procedure by looking up config by type."
   (cdr (assoc type ober:org-babel-type-list)))
 
+;; @ Utility
+(defun ober:src-block-empty-p (context)
+  "Return t if source block is empty."
+  ;; (equal (org-element-property :value context) "")
+  (not (string-match "[^\s\n]+" (org-element-property :value context))))
+
+(defun ober:select-block ()
+  "Returns t if selected region. Otherwise, returns nil."
+  (interactive)
+  (let ((context (org-element-context (org-element-at-point))))
+    (if (not (ober:src-block-empty-p context))
+        (progn
+          (goto-char (org-element-property :begin context)) ; #+BEGIN_SRC line
+          (next-line)                                       ; Beginning of the source
+          (set-mark-command nil)                            ; Start selecting
+          (goto-char (org-element-property :end context))   ; The line after #+END_SRC
+          (previous-line)                                   ; #+END_SRC line
+          (previous-line)                                   ; The beginning of the last line of the source
+          (goto-char (point-at-eol))                        ; The end of the last line of the source
+          (setq deactivate-mark nil)                        ; Do not disable marking
+          t)                                                ; Return t if successful
+        nil)))                                              ; Return nil otherwise
+
 ;; @ Interface
 ;;;###autoload
 (defun ober:eval-in-repl ()
@@ -77,8 +103,13 @@ Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))"
 
 ;;;###autoload
 (defun ober:eval-block-in-repl ()
-  "@todo to be added"
-  (interactive))
+  "Mark content of "
+  (interactive)
+  (let ((config (ober:get-exec-config (ober:get-type))))
+    (when (ober:select-block)
+      (require (nth 0 config))
+      (funcall (nth 1 config))
+      (setq deactivate-mark nil))))
 
 (provide 'org-babel-eval-in-repl)
 ;;; org-babel-eval-in-repl.el ends here
