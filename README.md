@@ -2,14 +2,15 @@
 Execute babel source code blocks with [eval-in-repl](https://github.com/kaz-yos/eval-in-repl).
 
 ## Features
-- Async execution (because it uses an external process!)
-- Babel execution without 
+- *Async execution* (because it uses an external process!)
+- Babel execution without the output written in the buffer (Less visual distraction! Output is reproducible as long as the code is saved)
 
 ## Usage
 ```
 (with-eval-after-load "ob"
   (require 'org-babel-eval-in-repl)
-  (define-key org-mode-map (kbd "C-<return>") 'ober:eval-in-repl))
+  (define-key org-mode-map (kbd "C-<return>") 'ober:eval-in-repl)
+  (define-key org-mode-map (kbd "C-c C-c") 'ober:eval-block-in-repl))
 ```
 
 ### Recommended config (optional):
