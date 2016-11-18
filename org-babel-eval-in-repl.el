@@ -3,8 +3,8 @@
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
 ;; URL: https://github.com/diadochos/org-babel-eval-in-repl
 
-;; Version:           20161119.0304
-;; Keywords: literate programming, reproducible research
+;; Version:           20161119.0604
+;; Keywords: literate programming, reproducible research, async execution
 
 ;;
 ;; This file is not part of GNU Emacs.
