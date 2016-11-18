@@ -1,10 +1,10 @@
-;;; org-babel-eval-in-repl.el --- Eval org code blocks in a REPL.
+;;; org-babel-eval-in-repl.el --- Send and eval org-mode babel code blocks in REPLs.
 ;;
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
-;; URL: https://github.com/diadochos/org-babel-eval-in-repl
-
 ;; Version:           20161119.0604
+;; Package-Requires: ((eval-in-repl "20160418.1843") (org "20161118"))
 ;; Keywords: literate programming, reproducible research, async execution
+;; URL: https://github.com/diadochos/org-babel-eval-in-repl
 
 ;;
 ;; This file is not part of GNU Emacs.
@@ -28,6 +28,20 @@
 ;; THE SOFTWARE.
 
 ;;; Commentary:
+;; This package allows you to execute org-mode (babel) source code blocks with eval-in-repl.
+;; ## Features
+;; - Async execution (because it uses an external process!)
+;; - Babel execution without the output written in the buffer (Less visual distraction! Output is reproducible as long as the code is saved)
+;;
+;; ## Usage
+;; (with-eval-after-load "ob"
+;;   (require 'org-babel-eval-in-repl)
+;;   (define-key org-mode-map (kbd "C-<return>") 'ober:eval-in-repl)
+;;   (define-key org-mode-map (kbd "C-c C-c") 'ober:eval-block-in-repl))
+;;
+;; ## Recommended config (optional):
+;; (with-eval-after-load "eval-in-repl"
+;;   (setq eir-jump-after-eval nil))
 
 ;;; Code:
 (require 'ob)
@@ -65,14 +79,15 @@ Returns nil if the cursor is outside a src block."
   "Association list of config.
 Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))")
 
-(defun ober:get-exec-config (type)
-  "Get exec procedure by looking up config by type."
-  (cdr (assoc type ober:org-babel-type-list)))
+(defun ober:get-exec-config (language)
+  "Get exec procedure by looking up config by LANGUAGE.
+`ober:org-babel-type-list' is the key variable to configure."
+  (cdr (assoc language ober:org-babel-type-list)))
 
 ;; @ Utility
 (defun ober:src-block-empty-p (context)
-  "Return t if source block is empty."
-  ;; (equal (org-element-property :value context) "")
+  "CONTEXT is the context object returned by `org-element-context'.
+Return t if source block is empty."
   (not (string-match "[^\s\n]+" (org-element-property :value context))))
 
 (defun ober:select-block ()
@@ -82,11 +97,10 @@ Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))"
     (if (not (ober:src-block-empty-p context))
         (progn
           (goto-char (org-element-property :begin context)) ; #+BEGIN_SRC line
-          (next-line)                                       ; Beginning of the source
+          (forward-line 1)                                       ; Beginning of the source
           (set-mark-command nil)                            ; Start selecting
           (goto-char (org-element-property :end context))   ; The line after #+END_SRC
-          (previous-line)                                   ; #+END_SRC line
-          (previous-line)                                   ; The beginning of the last line of the source
+          (forward-line -2)       ; The beginning of the last line of the source
           (goto-char (point-at-eol))                        ; The end of the last line of the source
           (setq deactivate-mark nil)                        ; Do not disable marking
           t)                                                ; Return t if successful
@@ -103,7 +117,7 @@ Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))"
 
 ;;;###autoload
 (defun ober:eval-block-in-repl ()
-  "Mark content of "
+  "Execute source code in a REPL. (The whole content in the block is evaluated)"
   (interactive)
   (let ((config (ober:get-exec-config (ober:get-type))))
     (when (ober:select-block)
