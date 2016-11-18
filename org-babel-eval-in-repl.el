@@ -60,8 +60,7 @@ Returns nil if the cursor is outside a src block."
     ("slime" . (eval-in-repl-slime eir-eval-in-slime))
     ("sml" . (eval-in-repl-sml eir-eval-in-sml)))
   "Association list of config.
-Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))
-@todo add more languages")
+Format: '((\"language-name\" . (feature-to-require execution-function-to-run))))
 
 (defun ober:get-exec-config (type)
   "Get exec procedure by looking up config by type."
