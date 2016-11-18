@@ -3,7 +3,7 @@
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
 ;; URL: https://github.com/diadochos/org-babel-eval-in-repl
 
-;; Version:           20161119.0112
+;; Version:           20161119.0304
 ;; Keywords: literate programming, reproducible research
 
 ;;
@@ -48,7 +48,7 @@ Returns nil if the cursor is outside a src block."
     ("cider" . (eval-in-repl-cider eir-eval-in-cider))
     ("geiser" . (eval-in-repl-geiser eir-eval-in-geiser))
     ("hy" . (eval-in-repl-hy eir-eval-in-hy))
-    ("ielm" . (eval-in-repl-ielm eir-eval-in-ielm))
+    ("emacs-lisp" . (eval-in-repl-ielm eir-eval-in-ielm))
     ("javascript" . (eval-in-repl-javascript eir-eval-in-javascript))
     ("ocaml" . (eval-in-repl-ocaml eir-eval-in-ocaml))
     ("prolog" . (eval-in-repl-prolog eir-eval-in-prolog))
@@ -56,11 +56,11 @@ Returns nil if the cursor is outside a src block."
     ("racket" . (eval-in-repl-racket eir-eval-in-racket))
     ("ruby" . (eval-in-repl-ruby eir-eval-in-ruby))
     ("scheme" . (eval-in-repl-scheme eir-eval-in-scheme))
-    ("shell" . (eval-in-repl-shell eir-eval-in-shell))
+    ("sh" . (eval-in-repl-shell eir-eval-in-shell))
     ("slime" . (eval-in-repl-slime eir-eval-in-slime))
     ("sml" . (eval-in-repl-sml eir-eval-in-sml)))
   "Association list of config.
-Format: '((\"language-name\" . (feature-to-require execution-function-to-run))))
+Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))")
 
 (defun ober:get-exec-config (type)
   "Get exec procedure by looking up config by type."
