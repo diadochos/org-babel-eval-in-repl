@@ -1,8 +1,8 @@
 ;;; org-babel-eval-in-repl.el --- Send and eval org-mode babel code blocks in REPLs.
 ;;
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
-;; Version:           20161119.0604
-;; Package-Requires: ((eval-in-repl "20160418.1843") (org "20161118"))
+;; Version:           20161119.1417
+;; Package-Requires: ((eval-in-repl "20160418.1843") (org-plus-contrib "20161118"))
 ;; Keywords: literate programming, reproducible research, async execution
 ;; URL: https://github.com/diadochos/org-babel-eval-in-repl
 
