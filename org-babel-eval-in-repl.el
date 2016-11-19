@@ -45,6 +45,7 @@
 
 ;;; Code:
 (require 'ob)
+(require 'eval-in-repl)
 
 ;; @ Get data
 (defun ober:get-block-content ()
