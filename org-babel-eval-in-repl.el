@@ -1,4 +1,4 @@
-;;; org-babel-eval-in-repl.el --- Send and eval org-mode babel code blocks in REPLs.
+;;; org-babel-eval-in-repl.el --- Send and eval org-mode babel code blocks in REPLs.   -*- lexical-binding: t; -*-
 ;;
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
 ;; Version:           20161119.1417
