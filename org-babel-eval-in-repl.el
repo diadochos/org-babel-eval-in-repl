@@ -1,7 +1,7 @@
 ;;; org-babel-eval-in-repl.el --- Eval org-mode babel code blocks in various REPLs.   -*- lexical-binding: t; -*-
 ;;
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
-;; Version:           20161119.1521
+;; Version:           20161119.1524
 ;; Package-Requires: ((eval-in-repl "20160418.1843") (org-plus-contrib "20161118") (emacs "24"))
 ;; Keywords: literate programming, reproducible research, async execution
 ;; URL: https://github.com/diadochos/org-babel-eval-in-repl
@@ -36,8 +36,8 @@
 ;; ## Usage
 ;; (with-eval-after-load "ob"
 ;;   (require 'org-babel-eval-in-repl)
-;;   (define-key org-mode-map (kbd "C-<return>") 'ober:eval-in-repl)
-;;   (define-key org-mode-map (kbd "C-c C-c") 'ober:eval-block-in-repl))
+;;   (define-key org-mode-map (kbd "C-<return>") 'ober-eval-in-repl)
+;;   (define-key org-mode-map (kbd "C-c C-c") 'ober-eval-block-in-repl))
 ;;
 ;; ## Recommended config (optional):
 ;; (with-eval-after-load "eval-in-repl"
@@ -48,11 +48,11 @@
 (require 'eval-in-repl)
 
 ;; @ Get data
-(defun ober:get-block-content ()
+(defun ober-get-block-content ()
   "Get source block content."
   (nth 1 (org-babel-get-src-block-info)))
 
-(defun ober:get-type ()
+(defun ober-get-type ()
   "Get language string from `org-babel-src-block-info'.
 Returns nil if the cursor is outside a src block."
   (nth 0 (org-babel-get-src-block-info)))
@@ -61,7 +61,7 @@ Returns nil if the cursor is outside a src block."
 ;; (org-babel-get-src-block-info) => '(language body arguments switches name start coderef)
 
 ;; @ Decide action
-(defvar ober:org-babel-type-list
+(defvar ober-org-babel-type-list
   '(("ruby" . (eval-in-repl-ruby eir-eval-in-ruby))
     ("cider" . (eval-in-repl-cider eir-eval-in-cider))
     ("geiser" . (eval-in-repl-geiser eir-eval-in-geiser))
@@ -80,22 +80,22 @@ Returns nil if the cursor is outside a src block."
   "Association list of config.
 Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))")
 
-(defun ober:get-exec-config (language)
+(defun ober-get-exec-config (language)
   "Get exec procedure by looking up config by LANGUAGE.
-`ober:org-babel-type-list' is the key variable to configure."
-  (cdr (assoc language ober:org-babel-type-list)))
+`ober-org-babel-type-list' is the key variable to configure."
+  (cdr (assoc language ober-org-babel-type-list)))
 
 ;; @ Utility
-(defun ober:src-block-empty-p (context)
+(defun ober-src-block-empty-p (context)
   "CONTEXT is the context object returned by `org-element-context'.
 Return t if source block is empty."
   (not (string-match "[^\s\n]+" (org-element-property :value context))))
 
-(defun ober:select-block ()
+(defun ober-select-block ()
   "Returns t if selected region. Otherwise, returns nil."
   (interactive)
   (let ((context (org-element-context (org-element-at-point))))
-    (if (not (ober:src-block-empty-p context))
+    (if (not (ober-src-block-empty-p context))
         (progn
           (goto-char (org-element-property :begin context)) ; #+BEGIN_SRC line
           (forward-line 1)                                       ; Beginning of the source
@@ -109,19 +109,19 @@ Return t if source block is empty."
 
 ;; @ Interface
 ;;;###autoload
-(defun ober:eval-in-repl ()
+(defun ober-eval-in-repl ()
   "Execute source code in a REPL. (The range to execute is determined by `eval-in-repl'.)"
   (interactive)
-  (let ((config (ober:get-exec-config (ober:get-type))))
+  (let ((config (ober-get-exec-config (ober-get-type))))
     (require (nth 0 config))
     (funcall (nth 1 config))))
 
 ;;;###autoload
-(defun ober:eval-block-in-repl ()
+(defun ober-eval-block-in-repl ()
   "Execute source code in a REPL. (The whole content in the block is evaluated)"
   (interactive)
-  (let ((config (ober:get-exec-config (ober:get-type))))
-    (when (ober:select-block)
+  (let ((config (ober-get-exec-config (ober-get-type))))
+    (when (ober-select-block)
       (require (nth 0 config))
       (funcall (nth 1 config))
       (setq deactivate-mark nil))))

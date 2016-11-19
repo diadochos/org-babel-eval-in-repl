@@ -6,8 +6,8 @@ This package allows you to execute org-mode (babel) source code blocks with eval
 ## Usage
 (with-eval-after-load "ob"
   (require 'org-babel-eval-in-repl)
-  (define-key org-mode-map (kbd "C-<return>") 'ober:eval-in-repl)
-  (define-key org-mode-map (kbd "C-c C-c") 'ober:eval-block-in-repl))
+  (define-key org-mode-map (kbd "C-<return>") 'ober-eval-in-repl)
+  (define-key org-mode-map (kbd "C-c C-c") 'ober-eval-block-in-repl))
 
 ## Recommended config (optional):
 (with-eval-after-load "eval-in-repl"

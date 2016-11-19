@@ -16,8 +16,8 @@ M-x package-install RET org-babel-eval-in-repl RET
 ``` emacs-lisp
 (with-eval-after-load "ob"
   (require 'org-babel-eval-in-repl)
-  (define-key org-mode-map (kbd "C-<return>") 'ober:eval-in-repl)
-  (define-key org-mode-map (kbd "C-c C-c") 'ober:eval-block-in-repl))
+  (define-key org-mode-map (kbd "C-<return>") 'ober-eval-in-repl)
+  (define-key org-mode-map (kbd "C-c C-c") 'ober-eval-block-in-repl))
 ```
 
 ### Recommended config (optional):
