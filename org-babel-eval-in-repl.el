@@ -82,7 +82,8 @@ Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))"
 
 (defun ober-get-exec-config (language)
   "Get exec procedure by looking up config by LANGUAGE.
-`ober-org-babel-type-list' is the key variable to configure."
+`ober-org-babel-type-list' is the key variable to configure.
+Return nil if it doesn't support the language"
   (cdr (assoc language ober-org-babel-type-list)))
 
 ;; @ Utility
@@ -113,6 +114,7 @@ Return t if source block is empty."
   "Execute source code in a REPL. (The range to execute is determined by `eval-in-repl'.)"
   (interactive)
   (let ((config (ober-get-exec-config (ober-get-type))))
+    (unless config (user-error "Language not supported"))
     (require (nth 0 config))
     (funcall (nth 1 config))))
 
@@ -121,6 +123,7 @@ Return t if source block is empty."
   "Execute source code in a REPL. (The whole content in the block is evaluated)"
   (interactive)
   (let ((config (ober-get-exec-config (ober-get-type))))
+    (unless config (user-error "Language not supported"))
     (when (ober-select-block)
       (require (nth 0 config))
       (funcall (nth 1 config))
