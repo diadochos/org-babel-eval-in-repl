@@ -2,7 +2,7 @@
 ;;
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
 ;; Version:           20161119.1604
-;; Package-Requires: ((eval-in-repl "20160418.1843") (org-plus-contrib "20161118") (emacs "24"))
+;; Package-Requires: ((eval-in-repl "0.9.2") (emacs "24"))
 ;; Keywords: literate programming, reproducible research, async execution
 ;; URL: https://github.com/diadochos/org-babel-eval-in-repl
 

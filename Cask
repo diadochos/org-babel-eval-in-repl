@@ -2,7 +2,6 @@
 (source melpa)
 
 (package-file "org-babel-eval-in-repl.el")
-(files "*.el")
 
 (development
  (depends-on "f")
