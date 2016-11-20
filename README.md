@@ -20,30 +20,11 @@ M-x package-install RET org-babel-eval-in-repl RET
   (define-key org-mode-map (kbd "M-<return>") 'ober-eval-block-in-repl))
 ```
 
+See the [wiki](https://github.com/diadochos/org-babel-eval-in-repl/wiki) for more usage (you can find more practical keybindings)
+
 ### Recommended config (optional):
+(This would be more like org-mode's `C-c C-c`)
 ``` emacs-lisp
 (with-eval-after-load "eval-in-repl"
   (setq eir-jump-after-eval nil))
 ```
-
-### More org-mode integrated usage
-``` emacs-lisp
-  (defun org-ctrl-return-around (org-fun &rest args)
-    "Run `ober-eval-in-repl' if in source code block and `org-insert-heading-respect-content' otherwise."
-    (if (org-in-block-p '("src" "example"))
-        (ober-eval-in-repl)
-      (apply org-fun args)))
-  (advice-add 'org-insert-heading-respect-content :around #'org-ctrl-return-around)
-
-  (defun org-meta-return-around (org-fun &rest args)
-    "Run `ober-eval-block-in-repl' if in source code block or example block and `org-meta-return' otherwise."
-    (if (org-in-block-p '("src" "example"))
-        (ober-eval-block-in-repl)
-      (apply org-fun args)))
-  (advice-add 'org-meta-return :around #'org-meta-return-around)
-```
-If you write the above code in your `.emacs.d`:
-- `C-<return>` will run **the code under the cursor** if in a source or example block.
-- `C-<return>` will work the same as usual if outside a source or example block.
-- `M-<return>` will run **the block under the cursor** if in a source or example block.
-- `M-<return>` will work the same as usual if outside a source or example block.
