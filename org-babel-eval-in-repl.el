@@ -45,6 +45,7 @@
 
 ;;; Code:
 (require 'ob)
+(require 'org-element)
 (require 'eval-in-repl)
 
 ;; @ Get data
