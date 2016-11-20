@@ -95,18 +95,14 @@ Return t if source block is empty."
 (defun ober-select-block ()
   "Returns t if selected region. Otherwise, returns nil."
   (interactive)
-  (let ((context (org-element-context (org-element-at-point))))
-    (if (not (ober-src-block-empty-p context))
-        (progn
-          (goto-char (org-element-property :begin context)) ; #+BEGIN_SRC line
-          (forward-line 1)                                       ; Beginning of the source
-          (set-mark-command nil)                            ; Start selecting
-          (goto-char (org-element-property :end context))   ; The line after #+END_SRC
-          (forward-line -2)       ; The beginning of the last line of the source
-          (goto-char (point-at-eol))                        ; The end of the last line of the source
-          (setq deactivate-mark nil)                        ; Do not disable marking
-          t)                                                ; Return t if successful
-        nil)))                                              ; Return nil otherwise
+  (when (org-in-block-p '("src" "example"))
+    (let ((element (org-element-at-point)))
+    (when (not (ober-src-block-empty-p element))
+      (let ((area (org-src--contents-area element)))
+        (set-mark (nth 0 area))
+        (goto-char (nth 1 area))
+        (setq deactivate-mark nil) ; Do not disable marking
+        t)))))
 
 ;; @ Interface
 ;;;###autoload
