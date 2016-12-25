@@ -109,21 +109,25 @@ Return t if source block is empty."
 (defun ober-eval-in-repl ()
   "Execute source code in a REPL. (The range to execute is determined by `eval-in-repl'.)"
   (interactive)
-  (let ((config (ober-get-exec-config (ober-get-type))))
-    (unless config (user-error "Language not supported"))
-    (require (nth 0 config))
-    (funcall (nth 1 config))))
+  (if (org-babel-get-src-block-info)
+      (let ((config (ober-get-exec-config (ober-get-type))))
+        (unless config (user-error "Language not supported"))
+        (require (nth 0 config))
+        (funcall (nth 1 config)))
+    (message "Not in Org-mode Babel.")))
 
 ;;;###autoload
 (defun ober-eval-block-in-repl ()
   "Execute source code in a REPL. (The whole content in the block is evaluated)"
   (interactive)
-  (let ((config (ober-get-exec-config (ober-get-type))))
-    (unless config (user-error "Language not supported"))
-    (when (ober-select-block)
-      (require (nth 0 config))
-      (funcall (nth 1 config))
-      (setq deactivate-mark nil))))
+  (if (org-babel-get-src-block-info)
+      (let ((config (ober-get-exec-config (ober-get-type))))
+        (unless config (user-error "Language not supported"))
+        (when (ober-select-block)
+          (require (nth 0 config))
+          (funcall (nth 1 config))
+          (setq deactivate-mark nil)))
+    (message "Not in Org-mode Babel.")))
 
 (provide 'org-babel-eval-in-repl)
 ;;; org-babel-eval-in-repl.el ends here
