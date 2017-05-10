@@ -8,7 +8,8 @@
 (depends-on "ess" "16.10")
 
 (development
- (depends-on "f")
- (depends-on "ecukes")
+ ;; (depends-on "f")
+ ;; (depends-on "ecukes")
  (depends-on "ert-runner")
- (depends-on "el-mock"))
+ ;; (depends-on "el-mock")
+ )
