@@ -28,3 +28,39 @@ See the [wiki](https://github.com/diadochos/org-babel-eval-in-repl/wiki) for mor
 (with-eval-after-load "eval-in-repl"
   (setq eir-jump-after-eval nil))
 ```
+
+### Example
+
+``` org
+#+BEGIN_SRC ruby
+p "Test"
+#+END_SRC
+```
+Press `C-<return>` on the source code.
+
+### Available languages
+| Available languages                   | Requirements         |
+|---------------------------------------+----------------------|
+| Languages defined in the package      |                      |
+|---------------------------------------+----------------------|
+| matlab                                | matlab-mode settings |
+| R                                     | ESS-mode             |
+| stata                                 |                      |
+|---------------------------------------+----------------------|
+| Languages delegated to `eval-in-repl` |                      |
+|---------------------------------------+----------------------|
+| ruby                                  |                      |
+| clojure                               |                      |
+| racket                                |                      |
+| racket                                |                      |
+| scheme                                |                      |
+| hy                                    |                      |
+| emacs-lisp                            |                      |
+| javascript                            |                      |
+| ocaml                                 |                      |
+| prolog                                |                      |
+| python                                |                      |
+| sh                                    |                      |
+| lisp                                  |                      |
+| perl                                  |                      |
+| sml                                   |                      |
