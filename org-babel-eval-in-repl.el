@@ -74,8 +74,16 @@ Returns nil if the cursor is outside a src block."
     ("ocaml" . (eval-in-repl-ocaml eir-eval-in-ocaml))
     ("prolog" . (eval-in-repl-prolog eir-eval-in-prolog))
     ("python" . (eval-in-repl-python eir-eval-in-python))
+
+    ;; ESS
+    ("R" . (eval-in-repl-ess ober-eval-R))
+    ("stata" . (eval-in-repl-ess ober-eval-stata))
+
+    ("matlab" . (eval-in-repl-matlab ober-eval-matlab))
+
     ("sh" . (eval-in-repl-shell eir-eval-in-shell))
     ("lisp" . (eval-in-repl-slime eir-eval-in-slime))
+    ;; ("perl" . (reply ober-eval-R))
     ("sml" . (eval-in-repl-sml eir-eval-in-sml)))
   "Association list of config.
 Format: '((\"language-name\" . (feature-to-require execution-function-to-run)))")
