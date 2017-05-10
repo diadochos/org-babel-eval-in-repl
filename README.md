@@ -46,7 +46,7 @@ Press `C-<return>` on the source code.
 | R                                             | ESS-mode                 |
 | stata                                         |                          |
 
-| Available languages (Delegated to [eval-in-repl](https://github.com/kaz-yos/eval-in-repl)) |                          |
+| Available languages (Delegated to [eval-in-repl](https://github.com/kaz-yos/eval-in-repl)) | Requirements             |
 | :-----------------------------------------                                                 | :----------------------- |
 | ruby                                                                                       |                          |
 | clojure                                                                                    |                          |
