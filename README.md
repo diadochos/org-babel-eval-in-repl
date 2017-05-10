@@ -39,25 +39,25 @@ p "Test"
 Press `C-<return>` on the source code.
 
 ### Available languages
-| Available languages                        | Requirements             |
-|:-----------------------------------------|:-----------------------|
-| *Languages defined in the package*          |                          |
-| matlab                                     | matlab-mode settings     |
-| R                                          | ESS-mode                 |
-| stata                                      |                          |
-| *Languages delegated to `eval-in-repl` *    |                          |
-| ruby                                       |                          |
-| clojure                                    |                          |
-| racket                                     |                          |
-| racket                                     |                          |
-| scheme                                     |                          |
-| hy                                         |                          |
-| emacs-lisp                                 |                          |
-| javascript                                 |                          |
-| ocaml                                      |                          |
-| prolog                                     |                          |
-| python                                     |                          |
-| sh                                         |                          |
-| lisp                                       |                          |
-| perl                                       |                          |
-| sml                                        |                          |
+| Available languages                                                                | Requirements             |
+| :-----------------------------------------                                         | :----------------------- |
+| **Languages defined in the package**                                               |                          |
+| matlab                                                                             | matlab-mode settings     |
+| R                                                                                  | ESS-mode                 |
+| stata                                                                              |                          |
+| **Languages delegated to [eval-in-repl](https://github.com/kaz-yos/eval-in-repl)** |                          |
+| ruby                                                                               |                          |
+| clojure                                                                            |                          |
+| racket                                                                             |                          |
+| racket                                                                             |                          |
+| scheme                                                                             |                          |
+| hy                                                                                 |                          |
+| emacs-lisp                                                                         |                          |
+| javascript                                                                         |                          |
+| ocaml                                                                              |                          |
+| prolog                                                                             |                          |
+| python                                                                             |                          |
+| sh                                                                                 |                          |
+| lisp                                                                               |                          |
+| perl                                                                               |                          |
+| sml                                                                                |                          |
