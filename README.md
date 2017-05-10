@@ -1,4 +1,4 @@
-[![MELPA](http://melpa.org/packages/org-babel-eval-in-repl-badge.svg?)](http://melpa.org/#/org-babel-eval-in-repl) [![MELPA Stable](http://stable.melpa.org/packages/org-babel-eval-in-repl-badge.svg?)](http://stable.melpa.org/#/org-babel-eval-in-repl)
+[![MELPA](http://melpa.org/packages/org-babel-eval-in-repl-badge.svg?)](http://melpa.org/#/org-babel-eval-in-repl) [![MELPA Stable](http://stable.melpa.org/packages/org-babel-eval-in-repl-badge.svg?)](http://stable.melpa.org/#/org-babel-eval-in-repl) [![Travis CI](https://travis-ci.org/diadochos/org-babel-eval-in-repl.svg)](https://travis-ci.org/diadochos/org-babel-eval-in-repl)
 # org-babel-eval-in-repl
 Execute babel source code blocks with [eval-in-repl](https://github.com/kaz-yos/eval-in-repl).
 
