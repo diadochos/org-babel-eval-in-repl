@@ -29,7 +29,7 @@
 ;; This file complements eval-in-repl.
 
 ;;; Code:
-(require 'ess)
+(require 'ess-site)
 
 ;; TODO: Avoid shared process: two different languages in the same org-mode buffer
 (defun ober--switch-to-process (language)
