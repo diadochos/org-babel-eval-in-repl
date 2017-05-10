@@ -1,0 +1,31 @@
+language: generic
+
+sudo: false
+
+addons:
+  apt:
+    sources:
+    - cassou-emacs
+    packages:
+    - emacs24
+
+env:
+  matrix:
+    - EMACS=emacs24
+
+before_install:
+  - git clone https://github.com/cask/cask.git "$HOME/.cask"
+  - export PATH="$HOME/.cask/bin:$PATH"
+
+install:
+  - cask install
+
+script:
+  - cask exec ert-runner
+  - cask exec emacs -Q -batch -L . -eval "(batch-byte-compile)" *.el
+  - cask exec ert-runner
+  - cask clean-elc
+
+# Local Variables:
+# coding: utf-8
+# End:
