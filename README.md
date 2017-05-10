@@ -41,7 +41,6 @@ Press `C-<return>` on the source code.
 ### Available languages
 | Available languages (Prepared in the package) | Requirements             |
 | :-----------------------------------------    | :----------------------- |
-|                                               |                          |
 | matlab                                        | matlab-mode settings     |
 | R                                             | ESS-mode                 |
 | stata                                         |                          |
