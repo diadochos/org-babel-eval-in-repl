@@ -19,11 +19,7 @@
 (require 'org-babel-eval-in-repl)
 
 ;; tests
-(ert-deftest should-be-true ()
-  "This test should pass."
-  (should t))
-
-(load "test/0-paths-test")
+(load "test/trivial-test")
 
 (provide 'org-babel-eval-in-repl-test)
 ;;; org-babel-eval-in-repl-test.el ends here
