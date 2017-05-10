@@ -22,7 +22,7 @@ install:
 
 script:
   - cask exec ert-runner
-  - cask exec emacs -Q -batch -L . -eval "(batch-byte-compile)" *.el
+  - cask exec emacs -Q -batch -L . -eval "(require 'org-babel-eval-in-repl) (batch-byte-compile)" *.el
   - cask exec ert-runner
   - cask clean-elc
 
