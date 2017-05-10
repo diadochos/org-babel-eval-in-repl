@@ -5,7 +5,7 @@
 (files "*.el")
 
 ;; (depends-on "matlab-mode") ; Need to check if this works.
-(depends-on "ess" "16.10")
+(depends-on "ess")
 
 (development
  ;; (depends-on "f")
