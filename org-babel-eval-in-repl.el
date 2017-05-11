@@ -120,7 +120,8 @@ Return t if source block is empty."
   (let ((config (ober-get-exec-config (ober-get-type))))
     (unless config (user-error "Language not supported"))
     (require (nth 0 config))
-    (funcall (nth 1 config))))
+    (save-mark-and-excursion
+     (funcall (nth 1 config)))))
 
 ;;;###autoload
 (defun ober-eval-block-in-repl ()
@@ -128,10 +129,11 @@ Return t if source block is empty."
   (interactive)
   (let ((config (ober-get-exec-config (ober-get-type))))
     (unless config (user-error "Language not supported"))
-    (when (ober-select-block)
-      (require (nth 0 config))
-      (funcall (nth 1 config))
-      (setq deactivate-mark nil))))
+    (save-mark-and-excursion
+     (when (ober-select-block)
+       (require (nth 0 config))
+       (funcall (nth 1 config))
+       (setq deactivate-mark nil)))))
 
 (provide 'org-babel-eval-in-repl)
 ;;; org-babel-eval-in-repl.el ends here
