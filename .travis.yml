@@ -11,7 +11,8 @@ addons:
 
 env:
   matrix:
-    - EMACS=emacs24
+    - EMACS_VERSION=25.3
+#    - EMACS=emacs24
 
 before_install:
   - git clone https://github.com/cask/cask.git "$HOME/.cask"
