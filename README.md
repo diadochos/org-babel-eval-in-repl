@@ -13,6 +13,8 @@ M-x package-install RET org-babel-eval-in-repl RET
 ```
 
 ## Usage
+No keybindings are provided by default (because I couldn't find one that's appropriate). Create your own comfortable keybind for execution. Here's my case:
+
 ``` emacs-lisp
 (with-eval-after-load "ob"
   (require 'org-babel-eval-in-repl)
@@ -23,7 +25,7 @@ M-x package-install RET org-babel-eval-in-repl RET
 See the [wiki](https://github.com/diadochos/org-babel-eval-in-repl/wiki) for more usage (you can find more practical keybindings)
 
 ### Recommended config (optional):
-(This would be more like org-mode's `C-c C-c`)
+(This prevents the cursor to jump to the repl buffer after execution. I was more comfortable with this)
 ``` emacs-lisp
 (with-eval-after-load "eval-in-repl"
   (setq eir-jump-after-eval nil))
