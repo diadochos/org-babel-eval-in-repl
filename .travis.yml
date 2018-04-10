@@ -7,7 +7,7 @@ addons:
     sources:
     - cassou-emacs
     packages:
-    - emacs24
+    - emacs25
 
 env:
   matrix:
