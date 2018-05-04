@@ -52,7 +52,6 @@ Press `C-<return>` on the source code.
 | ruby                                                                                       |                          |
 | clojure                                                                                    |                          |
 | racket                                                                                     |                          |
-| racket                                                                                     |                          |
 | scheme                                                                                     |                          |
 | hy                                                                                         |                          |
 | emacs-lisp                                                                                 |                          |
