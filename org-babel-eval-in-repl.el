@@ -53,10 +53,37 @@
   "Get source block content."
   (nth 1 (org-babel-get-src-block-info)))
 
+(defun ober-get-sh-session-name ()
+  "Get the sh session to run the code to"
+  (let* (
+		 (default-sh-session "*shell*")
+		 (params (nth 2 (org-babel-get-src-block-info)))
+		 (session (cdr (assq :session params)))
+		 ;; org-babel-get-src-block-info gives session "none" if no session value is given
+		 (session (if (string= session "none")
+					  default-sh-session
+					session))
+		 )
+	session
+	))
+
+
 (defun ober-get-type ()
   "Get language string from `org-babel-src-block-info'.
 Returns nil if the cursor is outside a src block."
   (nth 0 (org-babel-get-src-block-info)))
+
+(defun ober-eval-sh ()
+  "Evaluates an sh code block"
+  (interactive)
+  (let (
+		(session (ober-get-sh-session-name))
+		(prev-eir-shell-buffer-name eir-shell-buffer-name)
+		)
+	(setq eir-shell-buffer-name session)
+	(eir-eval-in-shell)
+	(setq eir-shell-buffer-name prev-eir-shell-buffer-name)
+	))
 
 ;; Reference:
 ;; (org-babel-get-src-block-info) => '(language body arguments switches name start coderef)
@@ -81,7 +108,7 @@ Returns nil if the cursor is outside a src block."
 
     ("matlab" . (eval-in-repl-matlab ober-eval-matlab))
 
-    ("sh" . (eval-in-repl-shell eir-eval-in-shell))
+    ("sh" . (eval-in-repl-shell ober-eval-sh))
     ("lisp" . (eval-in-repl-slime eir-eval-in-slime))
     ;; ("perl" . (reply ober-eval-R))
     ("sml" . (eval-in-repl-sml eir-eval-in-sml)))
@@ -105,12 +132,12 @@ Return t if source block is empty."
   (interactive)
   (when (org-in-block-p '("src" "example"))
     (let ((element (org-element-at-point)))
-    (when (not (ober-src-block-empty-p element))
-      (let ((area (org-src--contents-area element)))
-        (set-mark (nth 0 area))
-        (goto-char (nth 1 area))
-        (setq deactivate-mark nil) ; Do not disable marking
-        t)))))
+	  (when (not (ober-src-block-empty-p element))
+		(let ((area (org-src--contents-area element)))
+		  (set-mark (nth 0 area))
+		  (goto-char (nth 1 area))
+		  (setq deactivate-mark nil) ; Do not disable marking
+		  t)))))
 
 ;; @ Interface
 ;;;###autoload
