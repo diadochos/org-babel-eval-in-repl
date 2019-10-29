@@ -55,17 +55,14 @@
 
 (defun ober-get-sh-session-name ()
   "Get the sh session to run the code to"
-  (let* (
-		 (default-sh-session "*shell*")
-		 (params (nth 2 (org-babel-get-src-block-info)))
-		 (session (cdr (assq :session params)))
-		 ;; org-babel-get-src-block-info gives session "none" if no session value is given
-		 (session (if (string= session "none")
-					  default-sh-session
-					session))
-		 )
-	session
-	))
+  (let* ((default-sh-session "*shell*")
+	 (params (nth 2 (org-babel-get-src-block-info)))
+	 (session (cdr (assq :session params)))
+	 ;; org-babel-get-src-block-info gives session "none" if no session value is given
+	 (session (if (string= session "none")
+		      default-sh-session
+		    session)))
+    session))
 
 
 (defun ober-get-type ()
@@ -75,15 +72,11 @@ Returns nil if the cursor is outside a src block."
 
 (defun ober-eval-sh ()
   "Evaluates an sh code block"
-  (interactive)
-  (let (
-		(session (ober-get-sh-session-name))
-		(prev-eir-shell-buffer-name eir-shell-buffer-name)
-		)
-	(setq eir-shell-buffer-name session)
-	(eir-eval-in-shell)
-	(setq eir-shell-buffer-name prev-eir-shell-buffer-name)
-	))
+  (let* ((session (ober-get-sh-session-name))
+	 (prev-eir-shell-buffer-name session))
+    (setq eir-shell-buffer-name session)
+    (eir-eval-in-shell)
+    (setq eir-shell-buffer-name prev-eir-shell-buffer-name)))
 
 ;; Reference:
 ;; (org-babel-get-src-block-info) => '(language body arguments switches name start coderef)
