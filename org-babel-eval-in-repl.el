@@ -1,7 +1,7 @@
 ;;; org-babel-eval-in-repl.el --- Eval org-mode babel code blocks in various REPLs.   -*- lexical-binding: t; -*-
 ;;
 ;; Author: Takeshi Teshima <diadochos.developer@gmail.com>
-;; Version:           20170511.2114
+;; Version:           20191110.1206
 ;; Package-Requires: ((eval-in-repl "0.9.2") (matlab-mode "3.3.6") (ess "16.10") (emacs "24"))
 ;; Keywords: literate programming, reproducible research, async execution
 ;; URL: https://github.com/diadochos/org-babel-eval-in-repl
@@ -48,15 +48,37 @@
 (require 'org-element)
 (require 'eval-in-repl)
 
+(defcustom ober-default-shell-session "*shell*"
+  "If no :session is provided a sh source block, this value will be used."
+  :group 'org-babel-eval-in-repl
+  :type '(string))
+
 ;; @ Get data
 (defun ober-get-block-content ()
   "Get source block content."
   (nth 1 (org-babel-get-src-block-info)))
 
+(defun ober-get-sh-session-name ()
+  "Get the sh session to run the code to
+   Either retrieved by :session or from the ober-default-shell-session variable"
+  (let* ((params (nth 2 (org-babel-get-src-block-info)))
+	 (session (cdr (assq :session params)))
+	 ;; org-babel-get-src-block-info gives session "none" if no session value is given
+	 (session (if (string= session "none")
+		      ober-default-shell-session
+		    session)))
+    session))
+
+
 (defun ober-get-type ()
   "Get language string from `org-babel-src-block-info'.
 Returns nil if the cursor is outside a src block."
   (nth 0 (org-babel-get-src-block-info)))
+
+(defun ober-eval-sh ()
+  "Evaluates an sh code block"
+  (let ((eir-shell-buffer-name (ober-get-sh-session-name)))
+    (eir-eval-in-shell)))
 
 ;; Reference:
 ;; (org-babel-get-src-block-info) => '(language body arguments switches name start coderef)
@@ -81,7 +103,7 @@ Returns nil if the cursor is outside a src block."
 
     ("matlab" . (eval-in-repl-matlab ober-eval-matlab))
 
-    ("sh" . (eval-in-repl-shell eir-eval-in-shell))
+    ("sh" . (eval-in-repl-shell ober-eval-sh))
     ("lisp" . (eval-in-repl-slime eir-eval-in-slime))
     ;; ("perl" . (reply ober-eval-R))
     ("sml" . (eval-in-repl-sml eir-eval-in-sml)))
@@ -105,12 +127,12 @@ Return t if source block is empty."
   (interactive)
   (when (org-in-block-p '("src" "example"))
     (let ((element (org-element-at-point)))
-    (when (not (ober-src-block-empty-p element))
-      (let ((area (org-src--contents-area element)))
-        (set-mark (nth 0 area))
-        (goto-char (nth 1 area))
-        (setq deactivate-mark nil) ; Do not disable marking
-        t)))))
+	  (when (not (ober-src-block-empty-p element))
+		(let ((area (org-src--contents-area element)))
+		  (set-mark (nth 0 area))
+		  (goto-char (nth 1 area))
+		  (setq deactivate-mark nil) ; Do not disable marking
+		  t)))))
 
 ;; @ Interface
 ;;;###autoload

@@ -6,14 +6,15 @@ addons:
   apt:
     sources:
     - cassou-emacs
-    packages:
-    - emacs24
 
 env:
-  matrix:
-    - EMACS=emacs24
+  - EVM_EMACS=emacs-25.3-travis
 
 before_install:
+  - git clone https://github.com/rejeep/evm.git $HOME/.evm
+  - export PATH=$HOME/.evm/bin:$PATH
+  - evm config path /tmp
+  - evm install $EVM_EMACS --use --skip
   - git clone https://github.com/cask/cask.git "$HOME/.cask"
   - export PATH="$HOME/.cask/bin:$PATH"
 
