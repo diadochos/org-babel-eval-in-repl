@@ -2,6 +2,9 @@
 # org-babel-eval-in-repl
 Execute babel source code blocks with [eval-in-repl](https://github.com/kaz-yos/eval-in-repl).
 
+
+![Demonstration](https://user-images.githubusercontent.com/1299928/68528644-d6ab1200-02f5-11ea-8bf9-9997b3755429.gif)
+
 ## Features
 - *Async execution* (because it uses an external process!)
 - Babel execution without the output written in the buffer (Less visual distraction! Output is reproducible as long as the code is saved)
@@ -63,3 +66,6 @@ Press `C-<return>` on the source code.
 | lisp                                                                                       |                          |
 | perl                                                                                       |                          |
 | sml                                                                                        |                          |
+
+## Contributors
+Check out [here](./THANKS.md) for a list of contributors.
