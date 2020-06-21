@@ -53,15 +53,33 @@
   :group 'org-babel-eval-in-repl
   :type '(string))
 
+(defun ober-src-block-info-light ()
+  "Returns the src-block-info without evaluating anything.
+   While passing 'light to org-babel-get-src-block-info makes the
+   :var definitions not evaluate any lisp expressions, other
+   things (like :dir for example) get evaluated.
+
+   For example, the following org src header would cause the
+   elisp to be evaluated everytime upon calling
+   org-babel-get-src-block-info
+
+   :dir (read-directory-name \"dir name:\")"
+  (cl-flet ((read-advice (read-orig in &rest _)
+			 (funcall read-orig in 'inhibit-lisp-eval)))
+    (advice-add 'org-babel-read :around #'read-advice)
+    (let ((info (org-babel-get-src-block-info 'light)))
+      (advice-remove 'org-babel-read #'read-advice)
+      info)))
+
 ;; @ Get data
 (defun ober-get-block-content ()
   "Get source block content."
-  (nth 1 (org-babel-get-src-block-info t)))
+  (nth 1 (ober-src-block-info-light)))
 
 (defun ober-get-sh-session-name ()
   "Get the sh session to run the code to
    Either retrieved by :session or from the ober-default-shell-session variable"
-  (let* ((params (nth 2 (org-babel-get-src-block-info t)))
+  (let* ((params (nth 2 (ober-src-block-info-light)))
 	 (session (cdr (assq :session params)))
 	 ;; org-babel-get-src-block-info gives session "none" if no session value is given
 	 (session (if (string= session "none")
@@ -72,7 +90,7 @@
 (defun ober-get-type ()
   "Get language string from `org-babel-src-block-info'.
 Returns nil if the cursor is outside a src block."
-  (nth 0 (org-babel-get-src-block-info t)))
+  (nth 0 (ober-src-block-info-light)))
 
 (defun ober-eval-sh ()
   "Evaluates an sh code block"
@@ -82,7 +100,13 @@ Returns nil if the cursor is outside a src block."
       ;; if the shell is not started we:
       ;; 1. start the session
       ;; 2. send any initializations (customizations with :var :dir etc)
-      (let* ((params (nth 2 (org-babel-get-src-block-info nil))) ; getting the full info => evaluating :vars etc
+      (let* ((params (nth 2 (org-babel-get-src-block-info)))
+	     ;; following 2 sexp from org-babel-execute-src-block
+	     (dir (cdr (assq :dir params)))
+	     (default-directory
+	       (or (and dir (file-name-as-directory (expand-file-name dir)))
+		   default-directory))
+	     ;; done with dir
 	     (assignment-statement
 	      (org-babel-expand-body:generic
 	       "" params (org-babel-variable-assignments:shell params))))
@@ -90,8 +114,7 @@ Returns nil if the cursor is outside a src block."
 			;; TODO we can highjack this
 			(lambda () (interactive) (shell eir-shell-buffer-name))
 			t)
-	;; send this to the session
-	(message (concat "assignment " assignment-statement))
+	;; sending the necessary assignments the session
 	(eir-send-to-shell assignment-statement)
 	)
       )
