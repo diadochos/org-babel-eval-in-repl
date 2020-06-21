@@ -56,12 +56,13 @@
 ;; @ Get data
 (defun ober-get-block-content ()
   "Get source block content."
-  (nth 1 (org-babel-get-src-block-info)))
+  (nth 1 (org-babel-get-src-block-info t)))
 
-(defun ober-get-sh-session-name (params)
+(defun ober-get-sh-session-name ()
   "Get the sh session to run the code to
    Either retrieved by :session or from the ober-default-shell-session variable"
-  (let* ((session (cdr (assq :session params)))
+  (let* ((params (nth 2 (org-babel-get-src-block-info t)))
+	 (session (cdr (assq :session params)))
 	 ;; org-babel-get-src-block-info gives session "none" if no session value is given
 	 (session (if (string= session "none")
 		      ober-default-shell-session
@@ -71,25 +72,24 @@
 (defun ober-get-type ()
   "Get language string from `org-babel-src-block-info'.
 Returns nil if the cursor is outside a src block."
-  (nth 0 (org-babel-get-src-block-info)))
+  (nth 0 (org-babel-get-src-block-info t)))
 
 (defun ober-eval-sh ()
   "Evaluates an sh code block"
-  (let* ((params (nth 2 (org-babel-get-src-block-info)))
-	 (eir-shell-buffer-name (ober-get-sh-session-name params))
+  (let* ((eir-shell-buffer-name (ober-get-sh-session-name))
 	 (buffer (get-buffer eir-shell-buffer-name)))
     (when (not buffer)
       ;; if the shell is not started we:
       ;; 1. start the session
       ;; 2. send any initializations (customizations with :var :dir etc)
-      (eir-repl-start (regexp-quote eir-shell-buffer-name)
-		      ;; TODO we can highjack this
-		      (lambda () (interactive) (shell eir-shell-buffer-name))
-		      t)
-      (let* ((assignment-statement
+      (let* ((params (nth 2 (org-babel-get-src-block-info nil))) ; getting the full info => evaluating :vars etc
+	     (assignment-statement
 	      (org-babel-expand-body:generic
 	       "" params (org-babel-variable-assignments:shell params))))
-
+	(eir-repl-start (regexp-quote eir-shell-buffer-name)
+			;; TODO we can highjack this
+			(lambda () (interactive) (shell eir-shell-buffer-name))
+			t)
 	;; send this to the session
 	(message (concat "assignment " assignment-statement))
 	(eir-send-to-shell assignment-statement)
@@ -161,7 +161,7 @@ Return t if source block is empty."
     (unless config (user-error "Language not supported"))
     (require (nth 0 config))
     (save-mark-and-excursion
-      (funcall (nth 1 config)))))
+     (funcall (nth 1 config)))))
 
 ;;;###autoload
 (defun ober-eval-block-in-repl ()
