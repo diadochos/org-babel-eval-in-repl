@@ -92,34 +92,29 @@
 Returns nil if the cursor is outside a src block."
   (nth 0 (ober-src-block-info-light)))
 
+(defun ober-repl-start-shell ()
+  (let* ((eir-shell-buffer-name (ober-get-sh-session-name))
+	 (params (nth 2 (org-babel-get-src-block-info)))
+	 ;; following 2 sexp taken from org-babel-execute-src-block
+	 (dir (cdr (assq :dir params)))
+	 (default-directory
+	   (or (and dir (file-name-as-directory (expand-file-name dir)))
+	       default-directory))
+	 ;; initial assignments (for :var)
+	 (assignment-statement
+	  (org-babel-expand-body:generic
+	   "" params (org-babel-variable-assignments:shell params))))
+    (eir-repl-start (regexp-quote eir-shell-buffer-name)
+		    (lambda () (interactive) (shell eir-shell-buffer-name))
+		    t)
+    (eir-send-to-shell assignment-statement)))
+
 (defun ober-eval-sh ()
   "Evaluates an sh code block"
-  (let* ((eir-shell-buffer-name (ober-get-sh-session-name))
-	 (buffer (get-buffer eir-shell-buffer-name)))
-    (when (not buffer)
-      ;; if the shell is not started we:
-      ;; 1. start the session
-      ;; 2. send any initializations (customizations with :var :dir etc)
-      (let* ((params (nth 2 (org-babel-get-src-block-info)))
-	     ;; following 2 sexp from org-babel-execute-src-block
-	     (dir (cdr (assq :dir params)))
-	     (default-directory
-	       (or (and dir (file-name-as-directory (expand-file-name dir)))
-		   default-directory))
-	     ;; done with dir
-	     (assignment-statement
-	      (org-babel-expand-body:generic
-	       "" params (org-babel-variable-assignments:shell params))))
-	(eir-repl-start (regexp-quote eir-shell-buffer-name)
-			;; TODO we can highjack this
-			(lambda () (interactive) (shell eir-shell-buffer-name))
-			t)
-	;; sending the necessary assignments the session
-	(eir-send-to-shell assignment-statement)
-	)
-      )
-    (eir-eval-in-shell)
-    ))
+  (let ((eir-shell-buffer-name (ober-get-sh-session-name)))
+    (when (not (get-buffer eir-shell-buffer-name))
+      (ober-repl-start-shell))
+    (eir-eval-in-shell)))
 
 ;; Reference:
 ;; (org-babel-get-src-block-info) => '(language body arguments switches name start coderef)
