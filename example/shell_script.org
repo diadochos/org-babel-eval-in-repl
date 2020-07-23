@@ -1,0 +1,13 @@
+First, execute this:
+
+#+BEGIN_SRC elisp
+(require 'ob-shell)
+#+END_SRC
+
+#+BEGIN_SRC sh :session *sh1* :var test="abc"
+echo "test is $test"
+#+END_SRC
+
+#+BEGIN_SRC sh :session *sh2* :var test="def"
+echo "test is $test"
+#+END_SRC
