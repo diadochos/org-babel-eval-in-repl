@@ -1,4 +1,5 @@
 Special thanks to:
+- <2020-07-23 Thu> @actonDev for a fix to support :var and :dir in sh header.
 - <2019-12-03 Tue> @actonDev for a cool GIF demonstration.
 - <2019-11-10 Sun> @actonDev for brilliant work (along with an improvement to kaz-yos/eval-in-repl) to support multiple sessions.
 - <2016-11-21 Mon> @theldoria for a PR to validate cursor location, as well as smart refactoring.
