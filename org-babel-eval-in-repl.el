@@ -105,7 +105,7 @@ Returns nil if the cursor is outside a src block."
 	  (org-babel-expand-body:generic
 	   "" params (org-babel-variable-assignments:shell params))))
     (eir-repl-start (regexp-quote eir-shell-buffer-name)
-		    (lambda () (interactive) (shell eir-shell-buffer-name))
+		    (lambda () (interactive) (eir-create-shell eir-shell-buffer-name))
 		    t)
     (eir-send-to-shell assignment-statement)))
 
