@@ -97,6 +97,8 @@ Returns nil if the cursor is outside a src block."
 	 (params (nth 2 (org-babel-get-src-block-info)))
 	 ;; following 2 sexp taken from org-babel-execute-src-block
 	 (dir (cdr (assq :dir params)))
+	 (eir-shell-type (or (intern-soft (cdr (assq :shell-type (nth 2 (ober-src-block-info-light)))))
+			     eir-shell-type))
 	 (default-directory
 	   (or (and dir (file-name-as-directory (expand-file-name dir)))
 	       default-directory))
@@ -105,7 +107,7 @@ Returns nil if the cursor is outside a src block."
 	  (org-babel-expand-body:generic
 	   "" params (org-babel-variable-assignments:shell params))))
     (eir-repl-start (regexp-quote eir-shell-buffer-name)
-		    (lambda () (interactive) (shell eir-shell-buffer-name))
+		    (lambda () (interactive) (eir-create-shell eir-shell-buffer-name))
 		    t)
     (eir-send-to-shell assignment-statement)))
 
