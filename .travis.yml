@@ -8,7 +8,7 @@ addons:
     - cassou-emacs
 
 env:
-  - EVM_EMACS=emacs-25.3-travis
+  - EVM_EMACS=emacs-27.1-travis-linux-xenial
 
 before_install:
   - git clone https://github.com/rejeep/evm.git $HOME/.evm
