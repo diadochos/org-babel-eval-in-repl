@@ -1,0 +1,24 @@
+#+PROPERTY: header-args:sh :session *ober*
+
+The deployment process is managed by using Cask.
+
+* Installing cask
+
+  Via =Homebrew= or =Linuxbrew=
+  #+begin_src sh
+brew install cask
+  #+end_src
+
+  Via git
+  #+begin_src sh :var CASK_DIR=(read-directory-name "cask clone dir: ")
+git clone https://github.com/cask/cask.git $CASK_DIR
+git -C $CASK_DIR checkout v0.8.4 # latest tag as of <2020-12-06 Sun>
+export PATH=$PATH:$CASK_DIR/bin
+  #+end_src
+
+* Generating distribution files
+
+  First update version in the source code: [[file:org-babel-eval-in-repl.el::Version:]] and then run:
+  #+begin_src sh
+cask package
+  #+end_src
