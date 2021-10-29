@@ -115,7 +115,8 @@ Returns nil if the cursor is outside a src block."
   "Evaluates an sh code block"
   (let ((eir-shell-buffer-name (ober-get-sh-session-name)))
     (when (not (get-buffer eir-shell-buffer-name))
-      (ober-repl-start-shell))
+      (save-mark-and-excursion
+        (ober-repl-start-shell)))
     (eir-eval-in-shell)))
 
 ;; Reference:
